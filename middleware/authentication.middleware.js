@@ -45,6 +45,6 @@ export default async function isAuth(req, res, next) {
     // 1. There is no token
     // 2. Token is invalid
     // 3. There is no headers or authorization in req (no token)
-    res.status(401).json("token not provided or not valid");
+    res.status(401).json({ message: "token not provided or not valid", error });
   }
 }

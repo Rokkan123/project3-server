@@ -18,8 +18,6 @@ router.post("/:stratagemId", isAuth, isAdmin, async (req, res) => {
       rating,
       stratagem: stratagemId,
       creator: req.user._id,
-
-      likes,
     });
 
     await User.findByIdAndUpdate(
@@ -43,35 +41,27 @@ router.post("/:stratagemId", isAuth, isAdmin, async (req, res) => {
   }
 });
 // update review
-router.put("/:reviewId", isAuth, async (req, res) => {
+router.patch("/edit/:reviewId", isAuth, isAdmin, async (req, res) => {
   try {
     const { reviewId } = req.params;
-    const { title, review, rating } = req.body;
-    const reviewData = {
-      title,
-      review,
-      rating,
-    };
-    for (const property in reviewData) {
-      if (!reviewData[property]) {
-        delete reviewData.property;
-      }
-    }
 
-    const updated = await Review.findByIdAndUpdate(reviewId, reviewData, {
-      new: true,
-      runValidators: true,
-    });
+    const review = await Review.findOne({ _id: reviewId });
+    const body = { ...req.body };
 
-    res.json({ message: "Stratagem was updated succesfuly", updated });
+    const updatedReview = await Review.findOneAndUpdate(
+      { _id: review._id },
+      { ...body },
+      { new: true, runValidators: true }
+    );
+    return res.status(200).json(updatedReview);
   } catch (error) {
-    console.log("error editing the stratagem", error);
-    res.status(500).json(error);
+    console.error(error);
+    return res.status(500).json(error);
   }
 });
 
 //delete review
-router.delete("/:reviewId", isAuth, async (req, res) => {
+router.delete("/:reviewId", isAuth, isAdmin, async (req, res) => {
   try {
     const { reviewId } = req.params;
     const review = await Review.findById(reviewId);
@@ -93,6 +83,32 @@ router.delete("/:reviewId", isAuth, async (req, res) => {
   } catch (error) {
     console.log("error while deleting review", error);
     res.status(500).json(error);
+  }
+});
+router.patch("/like/:reviewId", isAuth, async (req, res) => {
+  try {
+    const { reviewId } = req.params;
+    const review = await Review.findOne({ _id: reviewId });
+
+    if (review.likes.includes(req.user._id)) {
+      const unLike = await Review.findOneAndUpdate(
+        { _id: reviewId },
+        { $pull: { likes: req.user._id } },
+        { new: true, runValidators: true }
+      );
+      return res.status(200).json(unLike);
+    }
+
+    const likeReview = await Review.findOneAndUpdate(
+      { _id: reviewId },
+      { $push: { likes: req.user._id } },
+      { new: true, runValidators: true }
+    );
+
+    return res.status(200).json(likeReview);
+  } catch (error) {
+    console.log(error);
+    return res.status(500).json(error);
   }
 });
 
