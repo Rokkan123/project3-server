@@ -101,7 +101,7 @@ router.post("/login", async (req, res) => {
       }
     );
 
-    res.json({ user, jwtToken });
+    res.json({ user, authToken: jwtToken });
   } catch (error) {
     console.log(error);
     res.status(500).json(error);

@@ -12,6 +12,7 @@ router.post("/", isAuth, isAdmin, async (req, res) => {
   try {
     const {
       name,
+      code,
       damage,
       cooldown,
       amount,
@@ -24,6 +25,7 @@ router.post("/", isAuth, isAdmin, async (req, res) => {
     } = req.body;
     const stratagemData = {
       name,
+      code,
       damage,
       cooldown,
       amount,
@@ -88,6 +90,7 @@ router.put("/:stratagemId", isAuth, isAdmin, async (req, res) => {
     const { stratagemId } = req.params;
     const {
       name,
+      code,
       damage,
       cooldown,
       amount,
@@ -99,6 +102,7 @@ router.put("/:stratagemId", isAuth, isAdmin, async (req, res) => {
     } = req.body;
     const stratagemData = {
       name,
+      code,
       damage,
       cooldown,
       amount,

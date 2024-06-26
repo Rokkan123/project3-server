@@ -7,6 +7,10 @@ const stratagemSchema = new Schema(
       type: String,
       required: true,
     },
+    code: {
+      type: String,
+      required: true,
+    },
     damage: {
       type: Number,
     },
@@ -43,7 +47,7 @@ const stratagemSchema = new Schema(
     image: {
       type: String,
       default:
-        "https://assets-global.website-files.com/642d682a6e4ca0d303c81fdf/65155692e2dc9f25a8fa90a5_ezgif.com-resize.webp",
+        "https://static.wikia.nocookie.net/helldivers_gamepedia/images/2/2b/OrbitalGatlingicon.png/",
     },
     penetration: {
       type: String,
