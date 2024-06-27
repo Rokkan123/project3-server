@@ -46,8 +46,7 @@ const stratagemSchema = new Schema(
     },
     image: {
       type: String,
-      default:
-        "https://static.wikia.nocookie.net/helldivers_gamepedia/images/2/2b/OrbitalGatlingicon.png/",
+      default: "",
     },
     penetration: {
       type: String,

@@ -40,6 +40,9 @@ export default async function isAuth(req, res, next) {
         .status(401)
         .json({ message: "No token was provided (malformed)" });
     }
+    if (error.message === "jwt expired") {
+      return (token = "");
+    }
     // We catch the error here and return a 401 status code and an error message
     // The middleware throws an error if unable to validate the token. It throws an error if:
     // 1. There is no token
